@@ -1,0 +1,35 @@
+# site that have users for examples: https://www.tonal.com/
+import requests
+
+# get the site URL from the user
+site = input("Enter the site URL: ")
+
+# append /wp-json/wp/v2/users to the site URL
+users_url = site + "/wp-json/wp/v2/users"
+
+# send a GET request to the users URL
+response = requests.get(users_url)
+
+# check if the request was successful (status code 200)
+if response.status_code == 200:
+    # get the JSON data from the response
+    users_data = response.json()
+
+    # check if there are users
+    if users_data:
+        # loop through the users data
+        for user in users_data:
+            # get the user ID, name, and slug
+            user_id = user["id"]
+            user_name = user["name"]
+            user_slug = user["slug"]
+
+            # print the user details
+            print(f"User ID: {user_id}")
+            print(f"User Name: {user_name}")
+            print(f"User Slug: {user_slug}")
+            print()
+    else:
+        print("No users found.")
+else:
+    print(f"Failed to fetch users. Status code: {response.status_code}")
