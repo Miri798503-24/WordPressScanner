@@ -1,59 +1,48 @@
-import socket
-import tkinter as tk
+# This script runs on Python 3
+import socket, threading
 
-# create a window
-window = tk.Tk()
-window.title("Port Scanner")
 
-# create a label for the host
-host_label = tk.Label(window, text="Host:")
-host_label.grid(row=0, column=0, padx=5, pady=5)
+def TCP_connect(ip, port_number, delay, output):
+    TCPsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    TCPsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    TCPsock.settimeout(delay)
+    try:
+        TCPsock.connect((ip, port_number))
+        output[port_number] = 'Listening'
+    except:
+        output[port_number] = ''
 
-# create an entry for the host
-host_entry = tk.Entry(window)
-host_entry.grid(row=0, column=1, padx=5, pady=5)
 
-# assign the start and end port to 0 and 1024
-start_port = 0
-end_port = 1024
 
-# create a text box for the results
-results_text = tk.Text(window, width=40, height=20)
-results_text.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+def scan_ports(host_ip, delay):
 
-# define a function to scan the ports
-def scan_ports():
-    # get the host from the entry
-    host = host_entry.get()
+    threads = []        # To run TCP_connect concurrently
+    output = {}         # For printing purposes
 
-    # clear the results text box
-    results_text.delete(1.0, tk.END)
+    # Spawning threads to scan ports
+    for i in range(10000):
+        t = threading.Thread(target=TCP_connect, args=(host_ip, i, delay, output))
+        threads.append(t)
 
-    # print the scanning message
-    results_text.insert(tk.END, f"Scanning {host} from port {start_port} to {end_port}\n")
+    # Starting threads
+    for i in range(10000):
+        threads[i].start()
 
-    # loop through the port range
-    for port in range(start_port, end_port + 1):
-        try:
-            # create a TCP socket
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            # set a timeout for the connection attempt
-            s.settimeout(0.5)
-            # try to connect to the host and port
-            result = s.connect_ex((host, port))
-            # if the connection was successful
-            if result == 0:
-                # print that the port is open
-                results_text.insert(tk.END, f"Port {port}: Open\n")
-            # close the socket
-            s.close()
-        except Exception as e:
-            # do nothing
-            pass
+    # Locking the main thread until all threads complete
+    for i in range(10000):
+        threads[i].join()
 
-# create a button to start the scan
-scan_button = tk.Button(window, text="Scan", command=scan_ports)
-scan_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5)
+    # Printing listening ports from small to large
+    for i in range(10000):
+        if output[i] == 'Listening':
+            print(str(i) + ': ' + output[i])
 
-# start the main loop
-window.mainloop()
+
+
+def main():
+    host_ip = input("Enter host IP: ")
+    delay = int(input("How many seconds the socket is going to wait until timeout: "))
+    scan_ports(host_ip, delay)
+
+if __name__ == "__main__":
+    main()
