@@ -1,5 +1,5 @@
 # This is a sample Python script.
-
+#   another example for web with vuln headers: url = "https://www.hashomer.org.il/"
 # Import requests library
 import requests
 
