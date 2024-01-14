@@ -3,7 +3,15 @@
 import requests
 
 # Define the url to test
-url = "https://bignews.co.il/xmlrpc.php"
+#url = "https://bignews.co.il/xmlrpc.php"
+
+
+# Define the base URL to check
+base_url = "https://bignews.co.il"
+
+# Append the xmlrpc.php directory to the base URL
+url = base_url + "/xmlrpc.php"
+
 
 # Try to get the url
 try:
@@ -31,5 +39,4 @@ try:
 except Exception as e:
     # Handle any exceptions
     print("An error occurred:", e)
-
 
