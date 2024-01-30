@@ -1,4 +1,5 @@
 # site that have users for examples: https://www.tonal.com/
+# add also checks of /?rest_route=/wp/v2/users /author-sitemap.xml /wp-json/wp/v2/users/1
 import requests
 
 # get the site URL from the user
