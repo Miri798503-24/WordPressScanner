@@ -1,0 +1,9 @@
+things to add:
+
+accessible pages:
+/wp-backup.php.old
+/backup.php.old
+/config.php.old
+/wp-config.php.old
+
+add more paths to find WP users.
