@@ -12,3 +12,6 @@ https://www.interaction.co.il/wp-sitemap-users-1.xml
 check webserver directory listening:
 /wp-content/
 /wp-includes
+
+Vulerable plugin:
+https://www.interaction.co.il/wp-content/plugins/string-locator/readme.txt
