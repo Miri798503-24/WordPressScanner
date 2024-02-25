@@ -7,3 +7,7 @@ accessible pages:
 /wp-config.php.old
 
 add more paths to find WP users.
+
+check webserver directory listening:
+/wp-content/
+/wp-includes
