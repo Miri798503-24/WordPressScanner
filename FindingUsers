@@ -1,5 +1,4 @@
 # site that have users for examples: https://www.tonal.com/
-# add also checks of /?rest_route=/wp/v2/users /author-sitemap.xml /wp-json/wp/v2/users/1
 import requests
 
 # get the site URL from the user
@@ -10,6 +9,28 @@ users_url = site + "/wp-json/wp/v2/users"
 
 # send a GET request to the users URL
 response = requests.get(users_url)
+
+# URLs to check
+urls_to_check = [
+    ("/wp-json/wp/v2/users", "WP REST API users endpoint"),
+    ("/author-sitemap.xml", "Author sitemap"),
+    ("/wp-json/wp/v2/users/1", "WP REST API user with ID 1"),
+    ("/wp-sitemap-users-1.xml", "WP user sitemap")
+]
+
+# Function to check if a URL is accessible and print the result
+def check_url(url, description):
+    full_url = site + url
+    try:
+        response = requests.get(full_url)
+        if response.status_code == 200:
+            print(f"Found {description} at: {full_url}")
+        elif response.status_code == 404:
+            pass
+        else:
+            print(f"Failed to check {description}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"An error occurred while checking {description}: {e}")
 
 # check if the request was successful (status code 200)
 if response.status_code == 200:
@@ -34,3 +55,7 @@ if response.status_code == 200:
         print("No users found.")
 else:
     print(f"Failed to fetch users. Status code: {response.status_code}")
+
+# Loop through the URLs and check each one
+for url, description in urls_to_check:
+    check_url(url, description)
