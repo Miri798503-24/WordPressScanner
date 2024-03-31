@@ -1,14 +1,7 @@
 things to add:
 
-accessible pages:
-/wp-backup.php.old
-/backup.php.old
-/config.php.old
-/wp-config.php.old
-
 add more paths to find WP users.
 https://www.interaction.co.il/wp-sitemap-users-1.xml
-
 
 Vulerable plugin:
 https://www.interaction.co.il/wp-content/plugins/string-locator/readme.txt
