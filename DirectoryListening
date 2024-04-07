@@ -1,3 +1,4 @@
+#https://medone.co.il/wp-content/uploads/
 import requests
 
 url = input("Enter the URL of the WordPress site: ")
