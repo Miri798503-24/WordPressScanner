@@ -24,7 +24,11 @@ def validate_url(url):
     # Check URL length
     if len(url) > 40:
         return "Invalid URL: Length exceeds 40 characters"
-    
+
+    # Path Traversal Check
+    if '..' in parsed_url.path:
+        return "Invalid URL: Path traversal detected"
+
     # Check if the website is accessible
     try:
         response = requests.get(url, timeout=5)
