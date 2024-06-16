@@ -1,0 +1,39 @@
+import ssl
+import socket
+import datetime
+
+
+def scan_ssl_certificate(url):
+    try:
+        # Extract the hostname from the URL
+        hostname = url.split('//')[1].split('/')[0]
+
+        # Establish a connection to the server
+        context = ssl.create_default_context()
+        with socket.create_connection((hostname, 443)) as sock:
+            with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+                # Get SSL certificate
+                cert = ssock.getpeercert()
+
+                # Check certificate expiration date
+                not_after_str = cert['notAfter']
+                not_after_date = datetime.datetime.strptime(not_after_str, "%b %d %H:%M:%S %Y %Z")
+                current_date = datetime.datetime.now()
+
+                if not_after_date < current_date:
+                    print("SSL Certificate has expired!")
+                else:
+                    print("SSL Certificate is valid.")
+
+
+        
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+# User input
+url = input("Enter the URL (e.g., https://example.com): ").strip()
+
+# Scan SSL certificate
+scan_ssl_certificate(url)
